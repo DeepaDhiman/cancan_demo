@@ -1,0 +1,27 @@
+<h1> Form </h1>
+<%= flash[:alert] %>
+<%= link_to "New question", new_question_path %>
+
+<% @questions.each do |question| %>
+  <div style = "border: 1px solid black">
+    <h1><%= question.content %></h1>
+    <%# if can? :update,question%>
+      <%= link_to "edit",edit_question_path(question)%>
+    <%# end %>
+    <%# if can? :destroy,question%>
+      <%= link_to "destroy",question,method: :delete,data: {confirm: 'Are you sure?'}%>
+    <%# end %>
+    <% if question.answers.any? %>
+        <h4>Answers</h4>
+        <%= render question.answers %>
+    <% end %>
+    <hr>
+    <p>Add answers</p>
+    <%= form_for ([question,question.answers.build]) do |f| %>
+      <%= f.text_area :content %>
+      <%= submit_tag "Add"%>
+    <% end %>
+  </div>
+  <br>
+  <br>
+<% end %>
